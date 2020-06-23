@@ -49,7 +49,7 @@ const parseTimelineRow = (row: TimelineRow) => {
     case 512:
     case 513:
     case 514: return `${getDefaultDateString(row.date)} ${row.data.itemName.padEnd(15, '  ')} ${row.name}\n`;
-    default: return ``;
+    default: return null;
   }
 }
 
@@ -89,7 +89,7 @@ export const messageTimeline = async (msg: Discord.Message, args: string[] = [])
   const escapeServerId = escape(serverId);
   const timeLine = await getTimeLine(escapeCharacterId, escapeServerId, { code });
 
-  const timeLineMessages = timeLine.timeline.rows.map(row => parseTimelineRow(row));
+  const timeLineMessages = timeLine.timeline.rows.map(row => parseTimelineRow(row)).filter(message => message);
 
   if (timeLineMessages.length === 0) {
     msg.reply(`해당 캐릭터는 타임라인이 없습니다.`);
