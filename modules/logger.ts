@@ -20,5 +20,4 @@ const discordLogger = winston.createLogger({
   ],
 });
 
-
 export { apiLogger, discordLogger };
