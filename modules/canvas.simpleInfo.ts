@@ -1,6 +1,4 @@
 import { createCanvas, loadImage, registerFont } from 'canvas';
-import { DOUBLE_BYTE_SPACE } from './constants';
-import fs from 'fs';
 
 interface SimpleInfo {
   characterId: string;
