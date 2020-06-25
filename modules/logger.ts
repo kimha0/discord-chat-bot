@@ -20,4 +20,14 @@ const discordLogger = winston.createLogger({
   ],
 });
 
-export { apiLogger, discordLogger };
+const redisLogger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'redis-service' },
+  transports: [
+    new winston.transports.File({ filename: 'redis.error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ],
+});
+
+export { apiLogger, discordLogger, redisLogger };

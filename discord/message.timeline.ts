@@ -1,9 +1,9 @@
 import Discord from 'discord.js';
 
-import { servers } from '../rxjs/serverList';
+import { asyncGetServers } from '../db/serverList';
 import { getServerIdByName } from '../modules/server';
 import { escape } from '../modules/encodeString';
-import { getTimeLine, Row as TimelineRow } from '../api/api.timeline';
+import { getCharacterTimeLine, Row as TimelineRow } from '../api/api.character.timeline';
 import { getDefaultDateString } from '../modules/timeFormat';
 import { getCharacters } from '../api/api.characters';
 
@@ -54,6 +54,7 @@ const parseTimelineRow = (row: TimelineRow) => {
 }
 
 export const messageTimeline = async (msg: Discord.Message, args: string[] = []) => {
+  const servers = await asyncGetServers();
   const [characterName, serverName, param] = args;
   if (serverName === '' || serverName === undefined || serverName === null) {
     msg.reply(guideMessage);
@@ -87,7 +88,7 @@ export const messageTimeline = async (msg: Discord.Message, args: string[] = [])
   const code = getCodeByParam(param);
   const escapeCharacterId = escape(characterId);
   const escapeServerId = escape(serverId);
-  const timeLine = await getTimeLine(escapeCharacterId, escapeServerId, { code });
+  const timeLine = await getCharacterTimeLine(escapeCharacterId, escapeServerId, { code });
 
   const timeLineMessages = timeLine.timeline.rows.map(row => parseTimelineRow(row)).filter(message => message);
 

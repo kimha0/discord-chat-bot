@@ -1,8 +1,9 @@
 import Discord from 'discord.js';
-import { servers } from '../rxjs/serverList';
+import { asyncGetServers } from '../db/serverList';
 import { getServerIdByName } from '../modules/server';
 
 export const messageServers = async (msg: Discord.Message, args: string[] = []) => {
+  const servers = await asyncGetServers();
   if (args.length === 0) {
     const serverString = servers.map(server => server.name).join(', ');
     msg.reply(`\`${serverString}\``);
@@ -10,5 +11,5 @@ export const messageServers = async (msg: Discord.Message, args: string[] = []) 
   }
 
   const serverIds = args.map(arg => getServerIdByName(servers, arg));
-  msg.reply(`\`serverId: [${serverIds.join(', ')}]\``);
+  msg.reply(`\`[${serverIds.join(', ')}]\``);
 };
